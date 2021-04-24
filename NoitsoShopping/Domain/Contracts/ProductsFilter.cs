@@ -6,6 +6,7 @@
         public string Category { get; set; }
         public PriceRange PriceRange { get; set; }
         public bool OnSale { get; set; }
+        public bool InStock { get; set; }
     }
 
     public class PriceRange

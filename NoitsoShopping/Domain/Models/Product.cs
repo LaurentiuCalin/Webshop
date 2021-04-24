@@ -9,6 +9,7 @@ namespace NoitsoShopping.Domain.Models
     {
         public Product()
         {
+            CartProducts = new HashSet<CartProduct>();
             OrderProducts = new HashSet<OrderProduct>();
         }
 
@@ -25,6 +26,7 @@ namespace NoitsoShopping.Domain.Models
 
         public virtual Category Category { get; set; }
         public virtual Discount Discount { get; set; }
+        public virtual ICollection<CartProduct> CartProducts { get; set; }
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -18,6 +19,8 @@ namespace NoitsoShopping.Domain.Models
         public string Country { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<User> Users { get; set; }

@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NoitsoShopping.Domain.Models;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace NoitsoShopping.Core.Data
+namespace NoitsoShopping.Domain.Models
 {
     public partial class WebshopContext : DbContext
     {
         public WebshopContext(DbContextOptions<WebshopContext> options)
-              : base(options)
+            : base(options)
         {
         }
 
@@ -55,6 +56,14 @@ namespace NoitsoShopping.Core.Data
                     .IsRequired()
                     .HasMaxLength(254);
 
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(254);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(254);
+
                 entity.Property(e => e.ZipCode)
                     .IsRequired()
                     .HasMaxLength(254);
@@ -67,28 +76,21 @@ namespace NoitsoShopping.Core.Data
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdateAt).HasColumnType("datetime");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Carts)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Cart__UserId__49C3F6B7");
             });
 
             modelBuilder.Entity<CartProduct>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.HasOne(d => d.Cart)
-                    .WithMany()
+                    .WithMany(p => p.CartProducts)
                     .HasForeignKey(d => d.CartId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CartProdu__CartI__4F7CD00D");
+                    .HasConstraintName("FK__CartProdu__CartI__5FB337D6");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany()
+                    .WithMany(p => p.CartProducts)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CartProdu__Produ__5070F446");
+                    .HasConstraintName("FK__CartProdu__Produ__60A75C0F");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -108,9 +110,9 @@ namespace NoitsoShopping.Core.Data
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.FormatConfiguration).IsRequired();
-
                 entity.Property(e => e.MaxQuantity).HasDefaultValueSql("((100))");
+
+                entity.Property(e => e.Percentage).HasColumnType("decimal(10, 2)");
 
                 entity.Property(e => e.UpdateAt)
                     .HasColumnType("datetime")
@@ -235,6 +237,9 @@ namespace NoitsoShopping.Core.Data
             {
                 entity.ToTable("User");
 
+                entity.HasIndex(e => new { e.Id, e.CartId }, "ucCodes")
+                    .IsUnique();
+
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -260,6 +265,12 @@ namespace NoitsoShopping.Core.Data
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__User__AddressId__3F466844");
+
+                entity.HasOne(d => d.Cart)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.CartId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__User__CartId__5BE2A6F2");
 
                 entity.HasOne(d => d.Membership)
                     .WithMany(p => p.Users)

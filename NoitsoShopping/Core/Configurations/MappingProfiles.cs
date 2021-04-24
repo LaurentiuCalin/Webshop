@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using NoitsoShopping.Domain.DTOs;
+using NoitsoShopping.Domain.Models;
 
 namespace NoitsoShopping.Core.Configurations
 {
@@ -6,7 +8,7 @@ namespace NoitsoShopping.Core.Configurations
     {
         public MappingProfiles()
         {
-
+            CreateMap<User, UserDto>();
         }
     }
 }

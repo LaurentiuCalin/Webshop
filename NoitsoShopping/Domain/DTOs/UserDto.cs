@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
-#nullable disable
-
-namespace NoitsoShopping.Domain.Models
+namespace NoitsoShopping.Domain.DTOs
 {
-    public partial class User
+    public class UserDto
     {
-        public User()
-        {
-            Orders = new HashSet<Order>();
-        }
-
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,11 +15,5 @@ namespace NoitsoShopping.Domain.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int CartId { get; set; }
-
-        public virtual Address Address { get; set; }
-        public virtual Cart Cart { get; set; }
-        public virtual Membership Membership { get; set; }
-        public virtual Payment Payment { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }
