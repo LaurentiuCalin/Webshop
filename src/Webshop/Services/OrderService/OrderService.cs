@@ -54,7 +54,7 @@ namespace Webshop.Services.OrderService
             return new()
             {
                 Id = orderProduct.Id,
-                SubractQuantity = orderProduct.Quantity
+                SubtractQuantity = orderProduct.Quantity
             };
         }
 

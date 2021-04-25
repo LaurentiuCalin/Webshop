@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Webshop.Domain.Models;
 
 namespace Webshop.Repositories.CartRepository
@@ -26,7 +26,7 @@ namespace Webshop.Repositories.CartRepository
         {
             var cart = await _dbContext.Carts
                 .Include(_ => _.CartProducts)
-                .ThenInclude<Cart, CartProduct, Product>(_ => _.Product)
+                .ThenInclude(_ => _.Product)
                 .SingleOrDefaultAsync(_ => _.Id == id);
 
             return cart;

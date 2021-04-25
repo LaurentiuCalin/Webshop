@@ -19,10 +19,5 @@ namespace Webshop.Repositories.PaymentRepository
             await _dbContext.SaveChangesAsync();
             return payment;
         }
-
-        public Task<Payment> GetAsync(int id)
-        {
-            return _dbContext.Payments.SingleOrDefaultAsync(_ => _.Id == id);
-        }
     }
 }

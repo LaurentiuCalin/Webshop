@@ -4,10 +4,6 @@ namespace Webshop.Utils.Exceptions
 {
     public class ExceededProductQuantityException : Exception
     {
-        public ExceededProductQuantityException()
-        {
-        }
-
         public ExceededProductQuantityException(string productName, string packageType, int availableQuantity,
             int requestedQuantity)
             : base(

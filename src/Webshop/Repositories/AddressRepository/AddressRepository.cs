@@ -19,10 +19,5 @@ namespace Webshop.Repositories.AddressRepository
             await _dbContext.SaveChangesAsync();
             return address;
         }
-
-        public Task<Address> GetAsync(int id)
-        {
-            return _dbContext.Addresses.SingleOrDefaultAsync(_ => _.Id == id);
-        }
     }
 }

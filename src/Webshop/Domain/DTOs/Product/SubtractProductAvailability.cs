@@ -3,6 +3,6 @@
     public class SubtractProductAvailability
     {
         public int Id { get; set; }
-        public int SubractQuantity { get; set; }
+        public int SubtractQuantity { get; set; }
     }
 }
