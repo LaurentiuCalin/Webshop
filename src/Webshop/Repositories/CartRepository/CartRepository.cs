@@ -14,9 +14,8 @@ namespace Webshop.Repositories.CartRepository
             _dbContext = dbContext;
         }
 
-        public async Task<Cart> CreateAsync()
+        public async Task<Cart> CreateAsync(Cart cart)
         {
-            var cart = new Cart();
             _dbContext.Add(cart);
             await _dbContext.SaveChangesAsync();
             return cart;

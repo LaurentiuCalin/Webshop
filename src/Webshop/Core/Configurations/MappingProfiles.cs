@@ -2,6 +2,7 @@
 using Webshop.Domain.DTOs;
 using Webshop.Domain.DTOs.Cart;
 using Webshop.Domain.DTOs.Discount;
+using Webshop.Domain.DTOs.Order;
 using Webshop.Domain.DTOs.Product;
 using Webshop.Domain.Models;
 
@@ -20,13 +21,18 @@ namespace Webshop.Core.Configurations
             CreateMap<Product, ProductDto>();
 
             CreateMap<Product, CartProductOverview>()
-                .ForMember(dest => dest.Category, src => src.MapFrom(_ => _.Category.Name));
+                .ForMember(dest => dest.Category, src => src.MapFrom(_ => _.Category.Name))
+                .ForMember(dest => dest.UnitPrice, src => src.MapFrom(_ => _.Price));
 
             CreateMap<Discount, DiscountOverview>();
             CreateMap<Discount, DiscountDto>();
             CreateMap<DiscountDto,Discount>();
             CreateMap<UpdateDiscount, Discount>();
             CreateMap<CreateDiscount, Discount>();
+
+            CreateMap<OrderProduct, OrderProductDto>();
+
+            CreateMap<Order, OrderDto>();
 
             CreateMap<Address, AddressDto>();
             CreateMap<CreateAddress, Address>();

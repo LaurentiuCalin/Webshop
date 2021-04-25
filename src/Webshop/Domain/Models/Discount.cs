@@ -14,7 +14,7 @@ namespace Webshop.Domain.Models
         }
 
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidUntil { get; set; }
         public bool IsActive { get; set; }

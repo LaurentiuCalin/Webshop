@@ -7,6 +7,7 @@ using Webshop.Domain.DTOs.Product;
 using Webshop.Domain.Models;
 using Webshop.Repositories.ProductRepository;
 using Webshop.Services.DatetimeService;
+using Webshop.Utils.Exceptions;
 using Webshop.Utils.Extensions;
 
 namespace Webshop.Services.ProductService
@@ -37,6 +38,16 @@ namespace Webshop.Services.ProductService
             IReadOnlyCollection<SubtractProductAvailability> productAvailabilities)
         {
             var products = await _productRepository.GetAsync(productAvailabilities.Select(_ => _.Id).ToList());
+
+            foreach (var product in products)
+            {
+                var subtractProduct = productAvailabilities.First(_ => _.Id == product.Id);
+                if (product.AvailableQuantity < subtractProduct.SubtractQuantity)
+                {
+                    throw new ExceededProductQuantityException(product.Name, product.PackageType,
+                        product.AvailableQuantity, subtractProduct.SubtractQuantity);
+                }
+            }
 
             Parallel.ForEach(products, product =>
             {

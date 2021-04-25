@@ -111,8 +111,6 @@ namespace Webshop.Domain.Models
 
                 entity.Property(e => e.MaxQuantity).HasDefaultValueSql("((100))");
 
-                entity.Property(e => e.Percentage).HasColumnType("decimal(10, 2)");
-
                 entity.Property(e => e.UpdateAt)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");

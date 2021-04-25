@@ -44,8 +44,11 @@ namespace Webshop.Services.UserService
 
         public async Task<UserDto> CreateGuestUserAsync()
         {
-            var cart = await _cartRepository.CreateAsync();
+            var cart = new Cart();
+            cart = await _cartRepository.CreateAsync(cart);
             var membership = await _membershipRepository.GetAsync("Guest");
+            membership.ThrowIfNull("Guest");
+
             var user = await _userRepository.CreateAsync(new User
             {
                 CartId = cart.Id,

@@ -30,7 +30,7 @@ namespace Webshop.Utils.Extensions
 
         public static bool IsAvailable(this Discount discount, DateTime currentDateTime)
         {
-            return discount.IsActive &&
+            return discount.IsActive && discount.ValidFrom == null && discount.ValidUntil == null ||
                    discount.ValidFrom < currentDateTime &&
                    discount.ValidUntil > currentDateTime;
         }

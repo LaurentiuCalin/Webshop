@@ -143,7 +143,7 @@ namespace Webshop.Tests.Unit.Services
             await _sut.AddProductAsync(cart.Id, product.Id, requestedQuantity);
 
             // Assert
-            await _cartRepository.Received().UpdateProductAsync(Arg.Is<CartProduct>(p =>
+            await _cartRepository.Received(1).UpdateProductAsync(Arg.Is<CartProduct>(p =>
                 p.CartId == cart.Id && p.Quantity == expectedQuantity &&
                 p.ProductId == product.Id));
         }
@@ -200,7 +200,7 @@ namespace Webshop.Tests.Unit.Services
             await _sut.EmptyCartAsync(cart.Id);
 
             // Assert
-            await _cartRepository.Received()
+            await _cartRepository.Received(1)
                 .DeleteProductsAsync(Arg.Is<ICollection<CartProduct>>(p =>
                     !cartProductsToDelete.Except(p.Select(_ => _.Id)).Any()));
         }

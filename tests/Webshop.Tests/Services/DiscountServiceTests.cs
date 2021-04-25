@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using FluentValidation;
 using NSubstitute;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Webshop.Core.Configurations;
 using Webshop.Domain.DTOs.Discount;
 using Webshop.Domain.Models;
@@ -11,6 +12,7 @@ using Webshop.Repositories.DiscountRepository;
 using Webshop.Repositories.MembershipRepository;
 using Webshop.Repositories.ProductRepository;
 using Webshop.Services.DiscountService;
+using Webshop.Validators;
 using Xunit;
 
 namespace Webshop.Tests.Unit.Services
@@ -21,6 +23,8 @@ namespace Webshop.Tests.Unit.Services
         private readonly IProductRepository _productRepository = Substitute.For<IProductRepository>();
         private readonly IDiscountRepository _discountRepository = Substitute.For<IDiscountRepository>();
         private readonly IMembershipRepository _membershipRepository = Substitute.For<IMembershipRepository>();
+        private readonly IValidator<CreateDiscount> _createDiscountValidator = new CreateDiscountValidator();
+        private readonly IValidator<UpdateDiscount> _updateDiscountValidator = new UpdateDiscountValidator();
         private readonly IMapper _mapper;
         private readonly IFixture _fixture = new Fixture();
 
@@ -29,21 +33,29 @@ namespace Webshop.Tests.Unit.Services
             var mappingProfiles = new MappingProfiles();
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(mappingProfiles));
             _mapper = new Mapper(configuration);
-            _sut = new DiscountService(_mapper, _productRepository, _discountRepository, _membershipRepository);
+            _sut = new DiscountService(_mapper, _productRepository, _discountRepository, _membershipRepository,
+                _createDiscountValidator, _updateDiscountValidator);
         }
 
         [Fact]
         public async Task CreateProductDiscountAsync_ShouldFail_WhenProductIsNull()
         {
             // Arrange
-            var productDiscount = _fixture.Create<CreateProductDiscount>();
-            var expectedException = new KeyNotFoundException($"{typeof(Product)} with id {productDiscount.ProductId} was not found");
+            var createProductDiscount = _fixture.Create<CreateProductDiscount>();
+
+            createProductDiscount.Discount.MaxQuantity = 20;
+            createProductDiscount.Discount.MinQuantity = 10;
+            createProductDiscount.Discount.Percentage = 14;
+            createProductDiscount.Discount.ValidFrom = null;
+            createProductDiscount.Discount.ValidUntil = null;
+
+            var expectedResult = new KeyNotFoundException($"{typeof(Product)} with id {createProductDiscount.ProductId} was not found");
 
             // Act
-            var result = await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.CreateProductDiscountAsync(productDiscount));
+            var result = await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.CreateProductDiscountAsync(createProductDiscount));
 
             // Assert
-            Assert.Equal(expectedException.Message, result.Message);
+            Assert.Equal(expectedResult.Message, result.Message);
         }
 
         [Fact]
@@ -52,6 +64,11 @@ namespace Webshop.Tests.Unit.Services
             // Arrange
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var createProductDiscount = _fixture.Create<CreateProductDiscount>();
+            createProductDiscount.Discount.MaxQuantity = 20;
+            createProductDiscount.Discount.MinQuantity = 10;
+            createProductDiscount.Discount.Percentage = 14;
+            createProductDiscount.Discount.ValidFrom = null;
+            createProductDiscount.Discount.ValidUntil = null;
             var product = _fixture.Create<Product>();
             createProductDiscount.ProductId = product.Id;
 
@@ -67,12 +84,12 @@ namespace Webshop.Tests.Unit.Services
             // Assert
             result.Should().BeEquivalentTo(expectedResult);
 
-            await _discountRepository.Received().CreateAsync(Arg.Is<CreateDiscount>(p =>
+            await _discountRepository.Received(1).CreateAsync(Arg.Is<CreateDiscount>(p =>
                 p.IsActive == createProductDiscount.Discount.IsActive &&
                 p.Name == createProductDiscount.Discount.Name &&
                 p.Percentage == createProductDiscount.Discount.Percentage));
 
-            await _productRepository.Received().UpdateAsync(Arg.Is<Product>(p =>
+            await _productRepository.Received(1).UpdateAsync(Arg.Is<Product>(p =>
                 p.Id == product.Id && p.Name == product.Name && p.DiscountId == result.Id));
         }
 
@@ -81,13 +98,18 @@ namespace Webshop.Tests.Unit.Services
         {
             // Arrange
             var createMembershipDiscount = _fixture.Create<CreateMembershipDiscount>();
-            var expectedException = new KeyNotFoundException($"{typeof(Membership)} with id {createMembershipDiscount.MembershipId} was not found");
+            createMembershipDiscount.Discount.MaxQuantity = 20;
+            createMembershipDiscount.Discount.MinQuantity = 10;
+            createMembershipDiscount.Discount.Percentage = 14;
+            createMembershipDiscount.Discount.ValidFrom = null;
+            createMembershipDiscount.Discount.ValidUntil = null;
+            var expectedResult = new KeyNotFoundException($"{typeof(Membership)} with id {createMembershipDiscount.MembershipId} was not found");
 
             // Act
             var result = await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _sut.CreateMembershipDiscountAsync(createMembershipDiscount));
 
             // Assert
-            Assert.Equal(expectedException.Message, result.Message);
+            Assert.Equal(expectedResult.Message, result.Message);
         }
 
         [Fact]
@@ -96,6 +118,11 @@ namespace Webshop.Tests.Unit.Services
             // Arrange
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var createMembershipDiscount = _fixture.Create<CreateMembershipDiscount>();
+            createMembershipDiscount.Discount.MaxQuantity = 20;
+            createMembershipDiscount.Discount.MinQuantity = 10;
+            createMembershipDiscount.Discount.Percentage = 14;
+            createMembershipDiscount.Discount.ValidFrom = null;
+            createMembershipDiscount.Discount.ValidUntil = null;
             var membership = _fixture.Create<Membership>();
             createMembershipDiscount.MembershipId = membership.Id;
 
@@ -111,12 +138,12 @@ namespace Webshop.Tests.Unit.Services
             // Assert
             result.Should().BeEquivalentTo(expectedResult);
 
-            await _discountRepository.Received().CreateAsync(Arg.Is<CreateDiscount>(p =>
+            await _discountRepository.Received(1).CreateAsync(Arg.Is<CreateDiscount>(p =>
                 p.IsActive == createMembershipDiscount.Discount.IsActive &&
                 p.Name == createMembershipDiscount.Discount.Name &&
                 p.Percentage == createMembershipDiscount.Discount.Percentage));
 
-            await _membershipRepository.Received().UpdateAsync(Arg.Is<Membership>(p =>
+            await _membershipRepository.Received(1).UpdateAsync(Arg.Is<Membership>(p =>
                 p.Id == membership.Id && p.Label == membership.Label && p.DiscountId == result.Id));
         }
 
@@ -126,12 +153,17 @@ namespace Webshop.Tests.Unit.Services
             // Arrange
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             var updateDiscount = _fixture.Create<UpdateDiscount>();
+            updateDiscount.MaxQuantity = 20;
+            updateDiscount.MinQuantity = 10;
+            updateDiscount.Percentage = 14;
+            updateDiscount.ValidFrom = null;
+            updateDiscount.ValidUntil = null;
 
             // Act
             await _sut.UpdateAsync(updateDiscount);
 
             // Assert
-            await _discountRepository.Received().UpdateAsync(Arg.Is<UpdateDiscount>(p =>
+            await _discountRepository.Received(1).UpdateAsync(Arg.Is<UpdateDiscount>(p =>
                 p.IsActive == updateDiscount.IsActive &&
                 p.Name == updateDiscount.Name &&
                 p.Percentage == updateDiscount.Percentage &&

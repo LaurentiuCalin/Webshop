@@ -11,5 +11,13 @@ namespace Webshop.Utils.Extensions
 
             return obj;
         }
+
+        /// <exception cref="KeyNotFoundException">When object is null.</exception>
+        public static T ThrowIfNull<T>(this T obj, string name)
+        {
+            if (obj == null) throw new KeyNotFoundException($"{typeof(T)} with value {name} was not found");
+
+            return obj;
+        }
     }
 }

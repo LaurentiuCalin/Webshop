@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using AutoMapper;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Webshop.Domain.DTOs;
 using Webshop.Domain.DTOs.Cart;
 using Webshop.Domain.DTOs.Order;
@@ -14,9 +15,9 @@ namespace Webshop.Services.OrderService
 {
     public class OrderService : IOrderService
     {
-        private readonly ICartService _cartService;
-        private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
+        private readonly ICartService _cartService;
         private readonly IProductService _productService;
 
         public OrderService(
@@ -41,10 +42,19 @@ namespace Webshop.Services.OrderService
                 OrderProducts = cartOverview.Products.Select(ToOrderProduct).ToList()
             });
 
+            try
+            {
+                await _productService.SubtractAvailabilityAsync(
+                    order.OrderProducts.Select(ToSubtractProductAvailability)
+                        .ToList());
+            }
+            catch (Exception)
+            {
+                await _orderRepository.DeleteAsync(order);
+                throw;
+            }
+
             await _cartService.EmptyCartAsync(cartOverview.CartId);
-            await _productService.SubtractAvailabilityAsync(
-                order.OrderProducts.Select(ToSubtractProductAvailability)
-                    .ToList());
 
             return _mapper.Map<OrderDto>(order);
         }

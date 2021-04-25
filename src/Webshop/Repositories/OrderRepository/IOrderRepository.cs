@@ -6,5 +6,6 @@ namespace Webshop.Repositories.OrderRepository
     public interface IOrderRepository
     {
         Task<Order> CreateAsync(Order order);
+        Task DeleteAsync(Order order);
     }
 }

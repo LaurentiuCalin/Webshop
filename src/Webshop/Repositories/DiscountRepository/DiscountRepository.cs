@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using System.Threading.Tasks;
 using Webshop.Domain.DTOs.Discount;
 using Webshop.Domain.Models;
+using Webshop.Utils.Exceptions;
 
 namespace Webshop.Repositories.DiscountRepository
 {

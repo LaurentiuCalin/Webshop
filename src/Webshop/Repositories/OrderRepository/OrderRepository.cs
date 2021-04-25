@@ -18,5 +18,11 @@ namespace Webshop.Repositories.OrderRepository
             await _dbContext.SaveChangesAsync();
             return order;
         }
+
+        public Task DeleteAsync(Order order)
+        {
+            _dbContext.Remove(order);
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace Webshop.Repositories.ProductRepository
             return product;
         }
 
-        public async Task<List<Product>> GetAsync()
+        public async Task<ICollection<Product>> GetAsync()
         {
             var products = await _dbContext.Products
                 .Include(_ => _.Discount)

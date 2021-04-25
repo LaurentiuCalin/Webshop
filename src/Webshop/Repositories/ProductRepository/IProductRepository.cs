@@ -8,7 +8,7 @@ namespace Webshop.Repositories.ProductRepository
     {
         Task<Product> GetAsync(int id);
         Task<ICollection<Product>> GetAsync(IReadOnlyCollection<int> ids);
-        Task<List<Product>> GetAsync();
+        Task<ICollection<Product>> GetAsync();
         Task UpdateAsync(Product product);
         Task UpdateAsync(ICollection<Product> products);
     }
