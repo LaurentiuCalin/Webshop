@@ -10,20 +10,20 @@ namespace Webshop.Services.DiscountService
 {
     public class DiscountService : IDiscountService
     {
-        private readonly IDiscountRepository _discountRepository;
         private readonly IMapper _mapper;
-        private readonly IMembershipRepository _membershipRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IDiscountRepository _discountRepository;
+        private readonly IMembershipRepository _membershipRepository;
 
         public DiscountService(
+            IMapper mapper,
             IProductRepository productRepository,
             IDiscountRepository discountRepository,
-            IMapper mapper,
             IMembershipRepository membershipRepository)
         {
+            _mapper = mapper;
             _productRepository = productRepository;
             _discountRepository = discountRepository;
-            _mapper = mapper;
             _membershipRepository = membershipRepository;
         }
 

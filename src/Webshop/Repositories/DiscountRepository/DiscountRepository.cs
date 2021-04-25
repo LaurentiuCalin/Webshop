@@ -16,12 +16,12 @@ namespace Webshop.Repositories.DiscountRepository
             _mapper = mapper;
         }
 
-        public async Task<DiscountDto> CreateAsync(CreateDiscount createDiscount)
+        public async Task<Discount> CreateAsync(CreateDiscount createDiscount)
         {
             var discount = _mapper.Map<Discount>(createDiscount);
             _dbContext.Add(discount);
             await _dbContext.SaveChangesAsync();
-            return _mapper.Map<DiscountDto>(discount);
+            return discount;
         }
 
         public Task UpdateAsync(UpdateDiscount updateDiscount)

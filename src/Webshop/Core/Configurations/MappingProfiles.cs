@@ -7,7 +7,7 @@ using Webshop.Domain.Models;
 
 namespace Webshop.Core.Configurations
 {
-    internal class MappingProfiles : Profile
+    public class MappingProfiles : Profile
     {
         public MappingProfiles()
         {
@@ -23,6 +23,8 @@ namespace Webshop.Core.Configurations
                 .ForMember(dest => dest.Category, src => src.MapFrom(_ => _.Category.Name));
 
             CreateMap<Discount, DiscountOverview>();
+            CreateMap<Discount, DiscountDto>();
+            CreateMap<DiscountDto,Discount>();
             CreateMap<UpdateDiscount, Discount>();
             CreateMap<CreateDiscount, Discount>();
 
