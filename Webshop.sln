@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webshop.tests", "Webshop.Tests\Webshop.tests.csproj", "{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458} = {5B501838-403C-4CDD-81A4-0CF6A8E5B458}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B0CAB0F-3E4A-4A87-9A16-3155B881B3EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8CD04062-BE6A-4706-A53E-260A252C34E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webshop", "Webshop\Webshop.csproj", "{5B501838-403C-4CDD-81A4-0CF6A8E5B458}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{952C6687-3F84-4831-9F6F-F9ACC7DBDAB4} = {8CD04062-BE6A-4706-A53E-260A252C34E5}
+		{5B501838-403C-4CDD-81A4-0CF6A8E5B458} = {1B0CAB0F-3E4A-4A87-9A16-3155B881B3EB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F592655-2683-46C6-BD65-DDE4121F7B3B}
+	EndGlobalSection
+EndGlobal
